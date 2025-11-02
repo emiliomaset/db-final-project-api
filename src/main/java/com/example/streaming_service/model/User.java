@@ -1,29 +1,28 @@
 package com.example.streaming_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class User
 {
     @Id
-    private String user_id; //Primary key
+    private String userId; //Primary key
 
     private String email;
     private String name;
-    private String street_name;
+    private String streetName;
     private String city;
     private String state;
     private String zip;
-    private String phone_num;
+    private String phoneNum;
     private String password;
 
     public User() {}
 
     //Setters
-    public void setUser_id(String user_id)
+    public void setUserId(String userId)
     {
-        this.user_id = user_id;
+        this.userId = userId;
     }
 
     public void setEmail(String email)
@@ -36,9 +35,9 @@ public class User
         this.name = name;
     }
 
-    public void setStreet_name(String street_name)
+    public void setStreetName(String streetName)
     {
-        this.street_name = street_name;
+        this.streetName = streetName;
     }
 
     public void setCity(String city)
@@ -56,9 +55,9 @@ public class User
         this.zip = zip;
     }
 
-    public void setPhone_num(String phone_num)
+    public void setPhoneNum(String phoneNum)
     {
-        this.phone_num = phone_num;
+        this.phoneNum = phoneNum;
     }
 
     public void setPassword(String password)
@@ -67,9 +66,9 @@ public class User
     }
 
     //Getters
-    public String getUser_id()
+    public String getUserId()
     {
-        return user_id;
+        return userId;
     }
 
     public String getEmail()
@@ -87,9 +86,9 @@ public class User
         return city;
     }
 
-    public String getStreet_name()
+    public String getStreetName()
     {
-        return street_name;
+        return streetName;
     }
 
     public String getState()
@@ -102,9 +101,9 @@ public class User
         return zip;
     }
 
-    public String getPhone_num()
+    public String getPhoneNum()
     {
-        return phone_num;
+        return phoneNum;
     }
 
     public String getPassword()
