@@ -8,5 +8,5 @@ public interface UserRepository extends JpaRepository<UserAccount, String>
 
     // This automatically generates the SQL:
     // SELECT * FROM user_account WHERE email = ? AND password = ?
-    UserAccount findUsingEmailAndPassword(String email, String password);
+    UserAccount findByEmailAndPassword(String email, String password);
 }

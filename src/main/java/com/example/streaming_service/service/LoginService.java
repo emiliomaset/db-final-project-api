@@ -14,6 +14,6 @@ public class LoginService
 
     public UserAccount checkLogin(String email, String password)
     {
-        return userRepository.findUsingEmailAndPassword(email, password);
+        return userRepository.findByEmailAndPassword(email, password);
     }
 }
