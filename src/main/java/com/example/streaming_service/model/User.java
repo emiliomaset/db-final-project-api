@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class UserAccount
+public class User
 {
     @Id
     private String user_id; //Primary key
@@ -18,7 +18,7 @@ public class UserAccount
     private String phone_num;
     private String password;
 
-    public UserAccount() {}
+    public User() {}
 
     //Setters
     public void setUser_id(String user_id)
