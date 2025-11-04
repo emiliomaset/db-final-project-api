@@ -18,9 +18,7 @@ public class LoginController
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User request) {
-        System.out.println("HEREEE" + request.toString());
         User user = loginService.checkLogin(request.getEmail(), request.getPassword());
-        System.out.println(user);
 
         if (user != null) { // if found in user table
             Member member = loginService.checkIfMember(user.getUserId());
