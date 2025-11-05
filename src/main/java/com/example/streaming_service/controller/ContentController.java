@@ -1,10 +1,8 @@
 package com.example.streaming_service.controller;
 
 import com.example.streaming_service.model.Content;
-import com.example.streaming_service.model.Movie;
-import com.example.streaming_service.repository.MovieHistoryRepository;
-import com.example.streaming_service.repository.MovieRepository;
-import com.example.streaming_service.repository.SeriesRepository;
+import com.example.streaming_service.model.Episode;
+import com.example.streaming_service.repository.*;
 import com.example.streaming_service.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,12 @@ public class ContentController {
     @Autowired
     private SeriesRepository seriesRepository;
 
+    @Autowired
+    private EpisodeRepository episodeRepository;
+
+    @Autowired
+    private EpisodeHistoryRepository episodeHistoryRepository;
+
     @GetMapping("/getallcontent")
     public ResponseEntity<List<Content>> getAllContent() {
         List<Content> content = contentService.getAllContent();
@@ -44,7 +48,6 @@ public class ContentController {
             return "series";
     }
 
-
     @PostMapping("/getmovieviewcount")
     public String getMovieViewCount(@RequestBody String contentId) {
         return Integer.toString(movieHistoryRepository.countByContentId(contentId));
@@ -55,7 +58,14 @@ public class ContentController {
         return Integer.toString(seriesRepository.findByContentId(contentId).getNumSeasons());
     }
 
+    @PostMapping("/getepisodes")
+    public List<Episode> getEpisodesOfSeries(@RequestBody Episode episode) {
+        return episodeRepository.findByContentIdAndSeasonNum(episode.getContentId(), episode.getSeasonNum());
+    }
 
-
+    @PostMapping("/getepisodeviewcount")
+    public String getEpisodeViewCount(@RequestBody String episodeId) {
+        return Integer.toString(episodeHistoryRepository.countByEpisodeId(episodeId));
+    }
 
 }
