@@ -19,7 +19,6 @@ public class LoginService
         return userRepository.findByEmailAndPassword(email, password);
     }
 
-
     @Autowired
     private AdminRepository adminRepository;
     public Administrator checkIfAdmin(String userId) {

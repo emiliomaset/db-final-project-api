@@ -2,6 +2,8 @@ package com.example.streaming_service.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
 import java.sql.Date;
 
 @Entity

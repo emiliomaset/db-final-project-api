@@ -13,9 +13,9 @@ public class ContentService {
     @Autowired
     private ContentRepository contentRepository;
 
-
     public List<Content> getAllContent() {
-        System.out.println("HEREEE" + contentRepository.findAll());
         return contentRepository.findAll();
     }
+
+
 }
