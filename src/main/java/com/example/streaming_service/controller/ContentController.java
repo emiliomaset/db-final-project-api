@@ -2,6 +2,7 @@ package com.example.streaming_service.controller;
 
 import com.example.streaming_service.model.Content;
 import com.example.streaming_service.model.Episode;
+import com.example.streaming_service.model.User;
 import com.example.streaming_service.repository.*;
 import com.example.streaming_service.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @Service
 @RestController
 public class ContentController {
@@ -66,6 +68,13 @@ public class ContentController {
     @PostMapping("/getepisodeviewcount")
     public String getEpisodeViewCount(@RequestBody String episodeId) {
         return Integer.toString(episodeHistoryRepository.countByEpisodeId(episodeId));
+    }
+
+    @GetMapping("/getviewers/{contentId}/{contentType}")
+    public List<User> getMembersWhoViewedAVideo(@PathVariable("contentId") String contentId, @PathVariable("contentType") String contentType) {
+        return contentService.getViewers(contentId, contentType);
+
+        // return orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductId(), orderRequest.getQuantity());
     }
 
 }
