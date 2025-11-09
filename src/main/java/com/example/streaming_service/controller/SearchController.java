@@ -15,15 +15,16 @@ import java.util.List;
 @RestController
 public class SearchController
 {
-    @GetMapping("/search")
-    public String search(@RequestParam(name = "q", required = false) String query)
-    {
-        if (query == null || query.isBlank())
-        {
-            return "Please type SOMETHING in...";
-            //return new RedirectView("https://www.google.com/");
-        }
-        return ContentRepository.findByTitleContaining(query.trim());          // Echo back exactly what was asked
-        //return new RedirectView(target, true);
-    }
+
+//    @GetMapping("/search")
+//    public String search(@RequestParam(name = "q", required = false) String query)
+//    {
+//        if (query == null || query.isBlank())
+//        {
+//            return "Please type SOMETHING in...";
+//            //return new RedirectView("https://www.google.com/");
+//        }
+//        return ContentRepository.findByTitleContaining(query.trim());          // Echo back exactly what was asked
+//        //return new RedirectView(target, true);
+//    }
 }

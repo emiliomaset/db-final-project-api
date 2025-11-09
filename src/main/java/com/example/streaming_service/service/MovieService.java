@@ -110,10 +110,11 @@ public class MovieService {
             LIMIT 10;
         """;
         return jdbcTemplate.queryForList(sql);
-    //User movie watch history
-    public List<Map<String, Object>> getMovieHistory(String userId)
-    {
-        String sql = """
+    }
+        //User movie watch history
+        public List<Map<String, Object>> getMovieHistory (String userId)
+        {
+            String sql = """
         SELECT content.title AS watched_movie, movie_history.`timestamp` AS watch_time
         FROM movie_history
         JOIN movie ON movie_history.content_id = movie.content_id
@@ -122,12 +123,12 @@ public class MovieService {
         ORDER BY timestamp DESC
     """;
 
-        return jdbcTemplate.queryForList(sql, userId);
-    }
+            return jdbcTemplate.queryForList(sql, userId);
+        }
 
-    //User series watch history
-    public List<Map<String, Object>> getEpisodeHistory(String userId) {
-        String sql = """
+        //User series watch history
+        public List<Map<String, Object>> getEpisodeHistory (String userId){
+            String sql = """
         SELECT content.title AS series_title,
                episode.title AS episode_title,
                episode_history.season_num,
@@ -139,39 +140,40 @@ public class MovieService {
         WHERE episode_history.user_id = ?
         ORDER BY eh.timestamp DESC
     """;
-        return jdbcTemplate.queryForList(sql, userId);
+            return jdbcTemplate.queryForList(sql, userId);
+        }
+
+
+        //User combined watch history
+        public List<Map<String, Object>> getAllHistory (String userId)
+        {
+            String sql = """
+                        SELECT
+                            content.title AS title,
+                            NULL AS episode_title,
+                            movie_history.movie_watch_time AS watch_time,
+                            'Movie' AS type
+                        FROM movie_history
+                        JOIN movie ON movie_history.content_id = movie.content_id
+                        JOIN content ON movie.content_id = content.content_id
+                        WHERE movie_history.user_id = ?
+                    
+                        UNION ALL
+                    
+                        SELECT
+                            content.title AS title,
+                            episode.title AS episode_title,
+                            episode_history.episode_watch_time AS watch_time,
+                            'Episode' AS type
+                        FROM episode_history
+                        JOIN series ON episode_history.content_id = series.content_id
+                        JOIN content ON series.content_id = content.content_id
+                        JOIN episode ON episode_history.episode_id = episode.episode_id
+                        WHERE episode_history.user_id = ?
+                    
+                        ORDER BY watch_time DESC;
+                    """;
+            return jdbcTemplate.queryForList(sql, userId, userId);
+        }
     }
 
-
-    //User combined watch history
-    public List<Map<String, Object>> getAllHistory(String userId)
-    {
-        String sql = """
-    SELECT
-        content.title AS title,
-        NULL AS episode_title,
-        movie_history.movie_watch_time AS watch_time,
-        'Movie' AS type
-    FROM movie_history
-    JOIN movie ON movie_history.content_id = movie.content_id
-    JOIN content ON movie.content_id = content.content_id
-    WHERE movie_history.user_id = ?
-
-    UNION ALL
-
-    SELECT
-        content.title AS title,
-        episode.title AS episode_title,
-        episode_history.episode_watch_time AS watch_time,
-        'Episode' AS type
-    FROM episode_history
-    JOIN series ON episode_history.content_id = series.content_id
-    JOIN content ON series.content_id = content.content_id
-    JOIN episode ON episode_history.episode_id = episode.episode_id
-    WHERE episode_history.user_id = ?
-
-    ORDER BY watch_time DESC;
-""";
-        return jdbcTemplate.queryForList(sql, userId, userId);
-    }
-}
