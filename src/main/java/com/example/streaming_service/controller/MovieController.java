@@ -46,11 +46,25 @@ public class MovieController
         return ResponseEntity.ok(sequels);
     }
 
-    //Member history controller
-    @GetMapping("/history/{userId}")
-    public List<Map<String, Object>> getMemberHistory(@PathVariable String userId)
+    //Movie history controller
+    @GetMapping("/movie-history/{userId}")
+    public List<Map<String, Object>> getMovieHistory(@PathVariable String userId)
     {
-        return movieService.getMemberHistory(userId);
+        return movieService.getMovieHistory(userId);
+    }
+
+    //Episode history controller
+    @GetMapping("/episode-history/{userId}")
+    public List<Map<String, Object>> getEpisodeHistory(@PathVariable String userId)
+    {
+        return movieService.getEpisodeHistory(userId);
+    }
+
+    //All history controller
+    @GetMapping("/all-history/{userId}")
+    public List<Map<String, Object>> getCombinedHistory(@PathVariable String userId)
+    {
+        return movieService.getAllHistory(userId);
     }
     // Streaming trend in the last 24 hours
     @GetMapping("/trends/last24hours")
