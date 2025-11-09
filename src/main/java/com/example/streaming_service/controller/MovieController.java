@@ -52,4 +52,16 @@ public class MovieController
     {
         return movieService.getMemberHistory(userId);
     }
+    // Streaming trend in the last 24 hours
+    @GetMapping("/trends/last24hours")
+    public List<Map<String, Object>> getStreamingTrendLast24Hours() {
+        return movieService.getStreamingTrendLast24Hours();
+    }
+
+    // Top 10 movies/series in the last month
+    @GetMapping("/top10/lastmonth")
+    public List<Map<String, Object>> getTopTenLastMonth() {
+        return movieService.getTopTenLastMonth();
+    }
+
 }

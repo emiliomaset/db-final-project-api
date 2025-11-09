@@ -75,4 +75,48 @@ public class MovieService {
 
         return jdbcTemplate.queryForList(sql, userId);
     }
+    // ✅ Query 5: Streaming Trend in the Last 24 Hours
+    public List<Map<String, Object>> getStreamingTrendLast24Hours()
+    {
+        String sql = """
+            SELECT 
+                c.title AS content_title,
+                COUNT(h.stream_id) AS stream_count,
+                MAX(h.timestamp) AS last_stream_time
+            FROM (
+                SELECT stream_id, content_id, timestamp FROM movie_history
+                UNION ALL
+                SELECT stream_id, content_id, timestamp FROM episode_history
+            ) h
+            JOIN content c ON h.content_id = c.content_id
+            WHERE h.timestamp >= NOW() - INTERVAL 1 DAY
+            GROUP BY c.title
+            ORDER BY last_stream_time DESC;
+        """;
+
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    // ✅ Query 6: Top 10 Movies/Series in the Last Month
+    public List<Map<String, Object>> getTopTenLastMonth()
+    {
+        String sql = """
+            SELECT 
+                c.title AS content_title,
+                COUNT(h.stream_id) AS total_streams
+            FROM (
+                SELECT stream_id, content_id, timestamp FROM movie_history
+                UNION ALL
+                SELECT stream_id, content_id, timestamp FROM episode_history
+            ) h
+            JOIN content c ON h.content_id = c.content_id
+            WHERE h.timestamp >= NOW() - INTERVAL 1 MONTH
+            GROUP BY c.title
+            ORDER BY total_streams DESC
+            LIMIT 10;
+        """;
+
+        return jdbcTemplate.queryForList(sql);
+    }
 }
+
