@@ -24,14 +24,15 @@ public class SearchController
     @GetMapping("/search")
     public List search(@RequestParam(name = "query", required = false) String query,
                        @RequestParam(name = "award", required = false) boolean awardCheck,
-                       @RequestParam(name = "watched", required = false) boolean watchedCheck)
+                       @RequestParam(name = "watched", required = false) boolean watchedCheck,
+                       @RequestParam(name = "userID", required = false) String userID)
     {
         if (query == null || query.isBlank())
         {
-            return new ArrayList<String>();
+            query = "";
         }
 
-        return searchService.search(query.trim(), awardCheck, watchedCheck);          // Echo back exactly what was asked
+        return searchService.search(query.trim(), awardCheck, watchedCheck, userID);          // Echo back exactly what was asked
     }
 
 }
