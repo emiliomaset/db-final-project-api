@@ -71,7 +71,7 @@ public class ContentController {
     }
 
     @GetMapping("/getviewers/{contentId}/{contentType}")
-    public List<User> getMembersWhoViewedAVideo(@PathVariable("contentId") String contentId, @PathVariable("contentType") String contentType) {
+    public List<?> getMembersWhoViewedAVideo(@PathVariable("contentId") String contentId, @PathVariable("contentType") String contentType) {
         return contentService.getViewers(contentId, contentType);
 
         // return orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductId(), orderRequest.getQuantity());
