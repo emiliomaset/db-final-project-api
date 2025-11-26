@@ -24,10 +24,15 @@ public class SearchService
         //Neither box is checked
         if(!awardCheck && !watchedCheck){
             sql += """
-                    SELECT DISTINCT c.title,
+                    SELECT DISTINCT c.content_id,
+                                    c.title,
                                     c.genre,
                                     c.release_date,
-                                    c.imdb_link
+                                    c.imdb_link,
+                                    CASE
+                                            WHEN m.content_id IS NOT NULL THEN 'movie'
+                                            WHEN s.content_id IS NOT NULL THEN 'series'
+                                    END AS contentType
                     FROM content c
                     LEFT JOIN movie m
                            ON c.content_id = m.content_id
@@ -59,10 +64,15 @@ public class SearchService
 
         else if(awardCheck && !watchedCheck){
             sql += """
-                    SELECT DISTINCT c.title,
+                    SELECT DISTINCT c.content_id,
+                                    c.title,
                                     c.genre,
                                     c.release_date,
-                                    c.imdb_link
+                                    c.imdb_link,
+                                    CASE
+                                            WHEN m.content_id IS NOT NULL THEN 'movie'
+                                            WHEN s.content_id IS NOT NULL THEN 'series'
+                                    END AS contentType
                     FROM content c
                     
                     -- Filters non-award winners out
@@ -98,10 +108,15 @@ public class SearchService
         }
         else if(!awardCheck && watchedCheck) {
             sql += """
-                    SELECT DISTINCT c.title,
+                    SELECT DISTINCT c.content_id,
+                                    c.title,
                                     c.genre,
                                     c.release_date,
-                                    c.imdb_link
+                                    c.imdb_link,
+                                    CASE
+                                            WHEN m.content_id IS NOT NULL THEN 'movie'
+                                            WHEN s.content_id IS NOT NULL THEN 'series'
+                                    END AS contentType
                     FROM content c
                             
                     LEFT JOIN movie m
@@ -151,10 +166,15 @@ public class SearchService
         //Both boxes checked
         else{
             sql += """
-                    SELECT DISTINCT c.title,
+                    SELECT DISTINCT c.content_id,
+                                    c.title,
                                     c.genre,
                                     c.release_date,
-                                    c.imdb_link
+                                    c.imdb_link,
+                                    CASE
+                                            WHEN m.content_id IS NOT NULL THEN 'movie'
+                                            WHEN s.content_id IS NOT NULL THEN 'series'
+                                    END AS contentType
                     FROM content c
                     
                     -- Filters non-award winners out

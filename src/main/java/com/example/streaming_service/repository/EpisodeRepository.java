@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface EpisodeRepository extends JpaRepository<Episode, String> {
-    List<Episode> findByContentIdAndSeasonNum(String contentId, short seasonNum);
+    List<Episode> findByContentIdAndSeasonNum(String contentId, Integer seasonNum);
 
     int countByContentId(String contentId);
 }

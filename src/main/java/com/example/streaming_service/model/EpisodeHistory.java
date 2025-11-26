@@ -1,20 +1,31 @@
 package com.example.streaming_service.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 
 @Entity
 public class EpisodeHistory {
 
     @Id
+    @Column(name = "stream_id")
     private String streamId;
 
-    private Time timestamp;
+    @Column(name = "episode_watch_time")
+    private Timestamp timestamp;
+
+    @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "content_id")
     private String contentId;
+
+    @Column(name = "season_num")
     private short seasonNum;
+
+    @Column(name = "episode_id")
     private String episodeId;
 
     public String getStreamId() {
@@ -25,11 +36,11 @@ public class EpisodeHistory {
         this.streamId = streamId;
     }
 
-    public Time getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Time timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 

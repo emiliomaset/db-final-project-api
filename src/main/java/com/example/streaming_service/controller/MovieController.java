@@ -1,9 +1,12 @@
 package com.example.streaming_service.controller;
 
 import com.example.streaming_service.service.MovieService;
+import com.example.streaming_service.dto.MovieStreamRequest;
+import com.example.streaming_service.dto.EpisodeStreamRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -78,4 +81,35 @@ public class MovieController
         return movieService.getTopTenLastMonth();
     }
 
+    //Movie stream controller
+    @PostMapping("/stream/movie")
+    public ResponseEntity<Void> streamMovie(@RequestBody MovieStreamRequest request)
+    {
+        if (request.getUserId() == null || request.getContentId() == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        movieService.logMovieStream(request.getContentId(), request.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    //Episode stream controller
+    @PostMapping("/stream/episode")
+    public ResponseEntity<Void> streamEpisode(@RequestBody EpisodeStreamRequest request) {
+
+        if (request.getUserId() == null || request.getContentId() == null || request.getEpisodeId() == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        movieService.logEpisodeStream(
+                request.getUserId(),
+                request.getContentId(),
+                request.getEpisodeId(),
+                request.getSeasonNum()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

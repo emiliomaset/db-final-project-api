@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.UUID; //Unique User Identifier for Streaming
 import java.util.List;
 import java.util.Map;
 
@@ -127,53 +127,78 @@ public class MovieService {
         }
 
         //User series watch history
-        public List<Map<String, Object>> getEpisodeHistory (String userId){
+        public List<Map<String, Object>> getEpisodeHistory(String userId){
             String sql = """
-        SELECT content.title AS series_title,
-               episode.title AS episode_title,
-               episode_history.season_num,
-               episode_history.timestamp AS watch_time
-        FROM episode_history
-        JOIN series ON episode_history.content_id = series.content_id
-        JOIN content ON series.content_id = content.content_id
-        JOIN episode ON episode_history.episode_id = episode.episode_id
-        WHERE episode_history.user_id = ?
-        ORDER BY eh.timestamp DESC
-    """;
+                            SELECT content.title AS series_title,
+                                   episode.title AS episode_title,
+                                   episode_history.season_num,
+                                   episode_history.episode_watch_time AS watch_time
+                            FROM episode_history
+                            JOIN series ON episode_history.content_id = series.content_id
+                            JOIN content ON series.content_id = content.content_id
+                            JOIN episode ON episode_history.episode_id = episode.episode_id
+                            WHERE episode_history.user_id = ?
+                            ORDER BY episode_history.episode_watch_time DESC
+                        """;
             return jdbcTemplate.queryForList(sql, userId);
         }
 
 
         //User combined watch history
-        public List<Map<String, Object>> getAllHistory (String userId)
+        public List<Map<String, Object>> getAllHistory(String userId)
         {
             String sql = """
-                        SELECT
-                            content.title AS title,
-                            NULL AS episode_title,
-                            movie_history.movie_watch_time AS watch_time,
-                            'Movie' AS type
-                        FROM movie_history
-                        JOIN movie ON movie_history.content_id = movie.content_id
-                        JOIN content ON movie.content_id = content.content_id
-                        WHERE movie_history.user_id = ?
-                    
-                        UNION ALL
-                    
-                        SELECT
-                            content.title AS title,
-                            episode.title AS episode_title,
-                            episode_history.episode_watch_time AS watch_time,
-                            'Episode' AS type
-                        FROM episode_history
-                        JOIN series ON episode_history.content_id = series.content_id
-                        JOIN content ON series.content_id = content.content_id
-                        JOIN episode ON episode_history.episode_id = episode.episode_id
-                        WHERE episode_history.user_id = ?
-                    
-                        ORDER BY watch_time DESC;
-                    """;
+        SELECT
+            content.title AS title,
+            NULL AS episode_title,
+            movie_history.movie_watch_time AS watch_time,
+            'Movie' AS type
+        FROM movie_history
+        JOIN movie ON movie_history.content_id = movie.content_id
+        JOIN content ON movie.content_id = content.content_id
+        WHERE movie_history.user_id = ?
+
+        UNION ALL
+
+        SELECT
+            content.title AS title,
+            episode.title AS episode_title,
+            episode_history.episode_watch_time AS watch_time,
+            'Episode' AS type
+        FROM episode_history
+        JOIN series ON episode_history.content_id = series.content_id
+        JOIN content ON series.content_id = content.content_id
+        JOIN episode ON episode_history.episode_id = episode.episode_id
+        WHERE episode_history.user_id = ?
+
+        ORDER BY watch_time DESC;
+    """;
             return jdbcTemplate.queryForList(sql, userId, userId);
         }
+
+    //Log a movie once it is streamed in the movie watch history
+    public void logMovieStream(String contentId, String userId)
+    {
+        String streamId = "MH-" + UUID.randomUUID();
+
+        String sql = """
+        INSERT INTO movie_history (stream_id, movie_watch_time, user_id, content_id)
+        VALUES (?, NOW(), ?, ?)
+        """;
+
+        jdbcTemplate.update(sql, streamId, userId, contentId);
     }
+
+    //Log an episode once it is streamed in an episode history
+    public void logEpisodeStream(String userId, String contentId, String episodeId, int seasonNum) {
+        String streamId = "EH-" + UUID.randomUUID();
+
+        String sql = """
+        INSERT INTO episode_history (stream_id, episode_watch_time, user_id, content_id, episode_id, season_num)
+        VALUES (?, NOW(), ?, ?, ?, ?)
+    """;
+
+        jdbcTemplate.update(sql, streamId, userId, contentId, episodeId, seasonNum);
+    }
+}
 

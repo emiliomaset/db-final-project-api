@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @Service
@@ -43,7 +44,10 @@ public class ContentController {
     }
 
     @PostMapping("/getmovieorseries")
-    public String getMovieOrSeries(@RequestBody String contentId) {
+    public String getMovieOrSeries(@RequestBody Map<String, String> body)
+    {
+        String contentId = body.get("contentId");
+
         if (movieRepository.existsById(contentId))
             return "movie";
         else
@@ -51,23 +55,37 @@ public class ContentController {
     }
 
     @PostMapping("/getmovieviewcount")
-    public String getMovieViewCount(@RequestBody String contentId) {
-        return Integer.toString(movieHistoryRepository.countByContentId(contentId));
+    public String getMovieViewCount(@RequestBody Map<String, String> body)
+    {
+        String contentId = body.get("contentId");
+
+        return movieHistoryRepository.countByContentId(contentId) + "";
     }
 
     @PostMapping("/getnumseasons")
-    public String getNumSeasonsByShow(@RequestBody String contentId) {
+    public String getNumSeasonsByShow(@RequestBody Map<String, String> body)
+    {
+        String contentId = body.get("contentId");
+
         return Integer.toString(seriesRepository.findByContentId(contentId).getNumSeasons());
     }
 
     @PostMapping("/getepisodes")
-    public List<Episode> getEpisodesOfSeries(@RequestBody Episode episode) {
-        return episodeRepository.findByContentIdAndSeasonNum(episode.getContentId(), episode.getSeasonNum());
+    public List<Episode> getEpisodesOfSeries(@RequestBody Map<String, Object> body)
+    {
+        String contentId = (String) body.get("contentId");
+        Integer seasonNum = (Integer) body.get("seasonNum");
+
+        return episodeRepository.findByContentIdAndSeasonNum(contentId, seasonNum);
     }
 
     @PostMapping("/getepisodeviewcount")
-    public String getEpisodeViewCount(@RequestBody String episodeId) {
-        return Integer.toString(episodeHistoryRepository.countByEpisodeId(episodeId));
+    public String getEpisodeViewCount(@RequestBody Map<String, String> body)
+    {
+        String episodeId = body.get("episodeId");
+        int count = episodeHistoryRepository.countByEpisodeId(episodeId);
+
+        return String.valueOf(count);
     }
 
     @GetMapping("/getviewers/{contentId}/{contentType}")
