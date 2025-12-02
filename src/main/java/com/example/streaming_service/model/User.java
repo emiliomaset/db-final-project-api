@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 public class User
 {
     @Id
+    @GeneratedValue
     private String userId; //Primary key
 
     private String email;
