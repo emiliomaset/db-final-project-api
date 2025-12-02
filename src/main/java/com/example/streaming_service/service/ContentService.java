@@ -55,7 +55,7 @@ public class ContentService {
         }
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            final HashMap<Object, Object> viewer = new HashMap<>();
+            final HashMap<String, String> viewer = new HashMap<>();
             viewer.put("name", rs.getString("name"));
             viewer.put("timesViewed", rs.getString("countViews"));
             viewer.put("lastView", rs.getString("lastView"));
