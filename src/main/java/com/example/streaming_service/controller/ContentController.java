@@ -17,6 +17,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173")
 @Service
 @RestController
+@RequestMapping("/api")
 public class ContentController {
 
     @Autowired
