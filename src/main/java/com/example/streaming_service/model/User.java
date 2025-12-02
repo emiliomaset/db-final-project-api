@@ -16,7 +16,7 @@ public class User
     private String zip;
     private String phoneNum;
     private String password;
-
+    private boolean isAdmin;
     public User() {}
 
     //Setters
@@ -64,7 +64,9 @@ public class User
     {
         this.password = password;
     }
-
+public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
+}
     //Getters
     public String getUserId()
     {
@@ -109,5 +111,8 @@ public class User
     public String getPassword()
     {
         return password;
+    }
+    public boolean isAdmin(){
+        return isAdmin;
     }
 }

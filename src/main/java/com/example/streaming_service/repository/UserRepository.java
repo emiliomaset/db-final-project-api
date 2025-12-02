@@ -5,9 +5,9 @@ import com.example.streaming_service.model.User;
 
 public interface UserRepository extends JpaRepository<User, String>
 {
-
-    // This automatically generates the SQL:
-    // SELECT * FROM user WHERE email = ? AND password = ?
+    // Login
     User findByEmailAndPassword(String email, String password);
 
+    // Fetch a user using only the email (used for profile page)
+    User findByEmail(String email);
 }
