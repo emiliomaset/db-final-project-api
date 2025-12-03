@@ -23,4 +23,10 @@ public class AdminController {
     public List<Map<String, Object>> getStreamingTrendLast24HoursForAdmin() {
         return movieService.getStreamingTrendLast24Hours();
     }
+    // Admin: Top 10 Movies/Series in the last month
+    @GetMapping("/top10")
+    public List<Map<String, Object>> getTopTenForAdmin() {
+        return movieService.getTopTenLastMonth();
+    }
+
 }

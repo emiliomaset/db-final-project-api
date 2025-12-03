@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class User
 {
     @Id
-    @GeneratedValue
     @Column(name = "user_id")
     private String userId;
 
