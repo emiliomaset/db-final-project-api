@@ -58,7 +58,7 @@ public class MovieService {
         return jdbcTemplate.queryForList(sql, contentId);
     }
 
-    // ✅ User watch history (updated for new schema)
+    // User watch history (updated for new schema)
     public List<Map<String, Object>> getMemberHistory(String userId) {
         String sql = """
             SELECT 
@@ -72,7 +72,7 @@ public class MovieService {
         return jdbcTemplate.queryForList(sql, userId);
     }
 
-    // ✅ Query 5: Streaming Trend in the Last 24 Hours
+    //  Query 5: Streaming Trend in the Last 24 Hours
     public List<Map<String, Object>> getStreamingTrendLast24Hours() {
         String sql = """
             SELECT 
@@ -92,7 +92,7 @@ public class MovieService {
         return jdbcTemplate.queryForList(sql);
     }
 
-    // ✅ Query 6: Top 10 Movies/Series in the Last Month
+    // Query 6: Top 10 Movies/Series in the Last Month
     public List<Map<String, Object>> getTopTenLastMonth() {
         String sql = """
             SELECT 
