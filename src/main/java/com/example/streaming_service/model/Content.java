@@ -1,20 +1,28 @@
 package com.example.streaming_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
+@Table(name = "content")
 public class Content {
 
     @Id
+    @Column(name = "content_id")
     private String contentId;
 
+    @Column(name = "title")
     private String title;
-    private Date  releaseDate;
+
+    @Column(name = "release_date")
+    @Temporal(TemporalType.DATE)
+    private Date releaseDate;
+
+    @Column(name = "genre")
     private String genre;
+
+    @Column(name = "imdb_link")
     private String imdbLink;
 
     public String getContentId() {

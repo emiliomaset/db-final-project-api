@@ -38,6 +38,9 @@ public class ContentController {
     @Autowired
     private EpisodeHistoryRepository episodeHistoryRepository;
 
+    @Autowired
+    private ContentRepository contentRepository;
+
     @GetMapping("/getallcontent")
     public ResponseEntity<List<Content>> getAllContent() {
         List<Content> content = contentService.getAllContent();
@@ -94,6 +97,17 @@ public class ContentController {
         return contentService.getViewers(contentId, contentType);
 
         // return orderService.createOrder(orderRequest.getUserId(), orderRequest.getProductId(), orderRequest.getQuantity());
+    }
+
+    @GetMapping("/content-details/{contentId}")
+    public ResponseEntity<Content> getContentDetails(@PathVariable String contentId) {
+        Content content = contentRepository.findById(contentId).orElse(null);
+
+        if (content == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(content);
     }
 
 }
