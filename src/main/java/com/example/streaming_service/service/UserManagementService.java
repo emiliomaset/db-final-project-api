@@ -77,10 +77,10 @@ public class UserManagementService {
         }
 
 
-        sql = "INSERT INTO user (user_id, email, name, street_name, city, state, zip, phone_num, password) VALUES (?,?,?,?,?,?,?,?,?)";
+        sql = "INSERT INTO user (user_id, email, name, street_name, city, state, zip, phone_num, password, is_admin) VALUES (?,?,?,?,?,?,?,?,?, ?)";
         insertResult = jdbcTemplate.update(sql, generatedID, userMemberDTO.getEmail(), userMemberDTO.getName(), userMemberDTO.getStreet_name(),
                 userMemberDTO.getCity(), userMemberDTO.getState(), userMemberDTO.getZip(),
-                userMemberDTO.getPhone_num(), userMemberDTO.getPassword());
+                userMemberDTO.getPhone_num(), userMemberDTO.getPassword(), 0);
 
         if (insertResult == 0) {
             return new ResponseEntity<String>("", HttpStatus.NOT_IMPLEMENTED); // collision in PKs
